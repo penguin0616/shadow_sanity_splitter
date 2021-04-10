@@ -25,6 +25,15 @@ local function AwardSanity(inst, amount)
 	end
 end
 
+local function CanGetSanity(inst)
+	return inst
+		and inst:IsValid()
+		and inst.components.sanity ~= nil
+		and inst.components.health ~= nil
+		and not inst.components.health:IsDead()
+		and not inst:HasTag("playerghost")
+end
+
 local function OnShadowHealthDelta(inst, data)
 	-- data { oldpercent = old_percent, newpercent = self:GetPercent(), overtime = overtime, cause = cause, afflicter = afflicter, amount = amount })
 	if type(data.amount) ~= "number" or data.amount >= 0 then
@@ -79,7 +88,7 @@ local function OnShadowKilled(inst, attacker)
 		local to_distribute = {}
 		local count = 0
 		for fighter, dmg in pairs(inst._attack_records) do
-			if fighter and fighter:IsValid() and fighter.components.sanity then
+			if CanGetSanity(fighter) then
 				count = count + 1
 				to_distribute[fighter] = dmg
 				total_damage_dealt = total_damage_dealt + dmg
@@ -100,7 +109,7 @@ local function OnShadowKilled(inst, attacker)
 		
 		-- figure out how many of the participants are actually valid to receive sanity
 		for fighter in pairs(inst._attack_records) do
-			if fighter and fighter:IsValid() and fighter.components.sanity ~= nil then
+			if CanGetSanity(fighter) then
 				table.insert(valid_participants, fighter)
 			end
 		end

@@ -1,7 +1,7 @@
 name = "Shadow Sanity Splitter"
 description = "Splits the sanity from fighting shadow creatures among the participants.\nCan be configured."
 author = "penguin0616"
-version = "1.0.0"
+version = "1.0.1"
 forumthread = ""
 icon_atlas = "modicon.xml"
 icon = "modicon.tex"
